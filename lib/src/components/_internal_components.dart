@@ -402,9 +402,9 @@ class EventGenerator<T extends Object?> extends StatelessWidget {
         left: events[index].left,
         right: events[index].right,
         child: GestureDetector(
-          onLongPress: () => onTileLongTap?.call(events[index].events, date),
-          onTap: () => onTileTap?.call(events[index].events, date),
-          onDoubleTap: () => onTileDoubleTap?.call(events[index].events, date),
+          onLongPress: onTileLongTap == null?null:() => onTileLongTap?.call(events[index].events, date),
+          onTap: onTileTap == null?null:() => onTileTap?.call(events[index].events, date),
+          onDoubleTap: onTileDoubleTap == null?null:() => onTileDoubleTap?.call(events[index].events, date),
           child: Builder(builder: (context) {
             if (scrollNotifier.shouldScroll &&
                 events[index]
