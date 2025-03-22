@@ -203,31 +203,26 @@ class FullDayEventView<T> extends StatelessWidget {
         itemCount: events.length,
         padding: padding ?? EdgeInsets.zero,
         shrinkWrap: true,
-        itemBuilder: (context, index) => GestureDetector(
-          onLongPress: onEventLongPress == null?null:() => onEventLongPress?.call(events, date),
-          onTap: onEventTap == null?null:() => onEventTap?.call(events, date),
-          onDoubleTap: onEventDoubleTap == null?null:() => onEventDoubleTap?.call(events, date),
-          child: itemView?.call(events[index]) ??
-              Container(
-                margin: const EdgeInsets.all(5.0),
-                padding: const EdgeInsets.all(1.0),
-                height: 24,
-                child: Text(
-                  events[index].title,
-                  style: titleStyle ??
-                      TextStyle(
-                        fontSize: 16,
-                        color: events[index].color.accent,
-                      ),
-                  maxLines: 1,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: events[index].color,
-                ),
-                alignment: Alignment.centerLeft,
+        itemBuilder: (context, index) => itemView?.call(events[index]) ??
+            Container(
+              margin: const EdgeInsets.all(5.0),
+              padding: const EdgeInsets.all(1.0),
+              height: 24,
+              child: Text(
+                events[index].title,
+                style: titleStyle ??
+                    TextStyle(
+                      fontSize: 16,
+                      color: events[index].color.accent,
+                    ),
+                maxLines: 1,
               ),
-        ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: events[index].color,
+              ),
+              alignment: Alignment.centerLeft,
+            ),
       ),
     );
   }
