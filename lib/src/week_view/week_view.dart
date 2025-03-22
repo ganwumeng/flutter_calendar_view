@@ -406,6 +406,7 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
     super.initState();
     _lastScrollOffset = widget.scrollOffset ??
         widget.startDuration.inMinutes * widget.heightPerMinute;
+    print("offset: $_lastScrollOffset");
 
     _startHour = widget.startHour;
     _endHour = widget.endHour;
