@@ -146,8 +146,12 @@ class WeekView<T extends Object?> extends StatefulWidget {
   /// Background color of week view page.
   final Color backgroundColor;
 
-  /// Scroll offset of week view page.
-  final double scrollOffset;
+  /// Defines initial offset of first page that will be displayed when
+  /// [WeekView] is initialized.
+  ///
+  /// If [scrollOffset] is null then [startDuration] will be considered for
+  /// initial offset.
+  final double? scrollOffset;
 
   /// This method will be called when user taps on timestamp in timeline.
   final TimestampCallback? onTimestampTap;
@@ -227,6 +231,10 @@ class WeekView<T extends Object?> extends StatefulWidget {
   ///Emulates offset of vertical line from hour line starts.
   final double emulateVerticalOffsetBy;
 
+  /// It define the starting duration from where week view page will be visible
+  /// By default it will be Duration(hours:0)
+  final Duration startDuration;
+
   /// Callback for the Header title
   final HeaderTitleCallback? onHeaderTitleTap;
 
@@ -298,6 +306,7 @@ class WeekView<T extends Object?> extends StatefulWidget {
     this.safeAreaOption = const SafeAreaOption(),
     this.fullDayEventBuilder,
     this.startHour = 0,
+    this.startDuration = const Duration(hours: 0),
     this.onHeaderTitleTap,
     this.showHalfHours = false,
     this.showQuarterHours = false,
@@ -395,10 +404,11 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
   @override
   void initState() {
     super.initState();
-    _lastScrollOffset = widget.scrollOffset;
+    _lastScrollOffset = widget.scrollOffset ??
+        widget.startDuration.inMinutes * widget.heightPerMinute;
 
     _scrollController =
-        ScrollController(initialScrollOffset: widget.scrollOffset);
+        ScrollController(initialScrollOffset: _lastScrollOffset);
 
     _startHour = widget.startHour;
     _endHour = widget.endHour;
@@ -477,10 +487,10 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
     // Update builders and callbacks
     _assignBuilders();
 
-    if (widget.scrollOffset != oldWidget.scrollOffset) {
-      _lastScrollOffset = widget.scrollOffset;
-      _scrollController.jumpTo(widget.scrollOffset);
-    }
+    // if (widget.scrollOffset != oldWidget.scrollOffset) {
+    //   _lastScrollOffset = widget.scrollOffset;
+    //   _scrollController.jumpTo(widget.scrollOffset);
+    // }
   }
 
   @override
@@ -902,6 +912,9 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
         _currentIndex = index;
       });
     }
+    if (!widget.keepScrollOffset) {
+      animateToDuration(widget.startDuration);
+    }
     widget.onPageChange?.call(_currentStartDate, _currentIndex);
   }
 
@@ -1015,6 +1028,27 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
       curve: curve ?? widget.pageTransitionCurve,
     );
   }
+
+  /// Animate to specific offset in a week view using the start duration
+  Future<void> animateToDuration(
+      Duration startDuration, {
+        Duration duration = const Duration(milliseconds: 200),
+        Curve curve = Curves.linear,
+      }) async {
+    final offSetForSingleMinute = _height / 24 / 60;
+    final startDurationInMinutes = startDuration.inMinutes;
+
+    // Added ternary condition below to take care if user passing duration
+    // above 24 hrs then we take it max as 24 hours only
+    final offset = offSetForSingleMinute *
+        (startDurationInMinutes > 3600 ? 3600 : startDurationInMinutes);
+    animateTo(
+      offset.toDouble(),
+      duration: duration,
+      curve: curve,
+    );
+  }
+
 
   /// Animate to specific scroll controller offset
   void animateTo(
