@@ -203,7 +203,7 @@ class FullDayEventView<T> extends StatelessWidget {
         itemCount: events.length,
         padding: padding ?? EdgeInsets.zero,
         shrinkWrap: true,
-        itemBuilder: (context, index) => InkWell(
+        itemBuilder: (context, index) => GestureDetector(
           onLongPress: onEventLongPress == null?null:() => onEventLongPress?.call(events, date),
           onTap: onEventTap == null?null:() => onEventTap?.call(events, date),
           onDoubleTap: onEventDoubleTap == null?null:() => onEventDoubleTap?.call(events, date),
