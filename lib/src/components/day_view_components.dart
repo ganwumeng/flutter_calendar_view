@@ -204,9 +204,9 @@ class FullDayEventView<T> extends StatelessWidget {
         padding: padding ?? EdgeInsets.zero,
         shrinkWrap: true,
         itemBuilder: (context, index) => InkWell(
-          onLongPress: () => onEventLongPress?.call(events, date),
-          onTap: () => onEventTap?.call(events, date),
-          onDoubleTap: () => onEventDoubleTap?.call(events, date),
+          onLongPress: onEventLongPress == null?null:() => onEventLongPress?.call(events, date),
+          onTap: onEventTap == null?null:() => onEventTap?.call(events, date),
+          onDoubleTap: onEventDoubleTap == null?null:() => onEventDoubleTap?.call(events, date),
           child: itemView?.call(events[index]) ??
               Container(
                 margin: const EdgeInsets.all(5.0),
