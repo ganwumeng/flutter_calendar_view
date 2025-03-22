@@ -288,7 +288,7 @@ class WeekView<T extends Object?> extends StatefulWidget {
     this.weekNumberBuilder,
     this.backgroundColor = Colors.white,
     this.scrollPhysics,
-    this.scrollOffset = 0.0,
+    this.scrollOffset,
     this.onEventTap,
     this.onEventLongTap,
     this.onDateLongPress,
@@ -406,9 +406,6 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
     super.initState();
     _lastScrollOffset = widget.scrollOffset ??
         widget.startDuration.inMinutes * widget.heightPerMinute;
-    print("startDuration: ${widget.startDuration}");
-    print("heightPerMinute: ${widget.heightPerMinute}");
-    print("offset: $_lastScrollOffset");
 
     _startHour = widget.startHour;
     _endHour = widget.endHour;
