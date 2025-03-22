@@ -407,9 +407,6 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
     _lastScrollOffset = widget.scrollOffset ??
         widget.startDuration.inMinutes * widget.heightPerMinute;
 
-    _scrollController =
-        ScrollController(initialScrollOffset: _lastScrollOffset);
-
     _startHour = widget.startHour;
     _endHour = widget.endHour;
 
@@ -423,6 +420,8 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
     _regulateCurrentDate();
 
     _calculateHeights();
+    _scrollController =
+        ScrollController(initialScrollOffset: _lastScrollOffset);
 
     _pageController = PageController(initialPage: _currentIndex);
     _eventArranger = widget.eventArranger ?? SideEventArranger<T>();
