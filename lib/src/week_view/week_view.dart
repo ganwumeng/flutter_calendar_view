@@ -760,6 +760,14 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
         _minDate.getWeekDifference(_maxDate, start: widget.startDay) + 1;
   }
 
+  void setCurrentWeek(DateTime week) {
+    if (week.isBefore(_minDate) || week.isAfter(_maxDate)) {
+      throw "Invalid date selected.";
+    }
+    _currentWeek = week;
+    _regulateCurrentDate();
+  }
+
   /// Default press detector builder. This builder will be used if
   /// [widget.weekDetectorBuilder] is null.
   ///
