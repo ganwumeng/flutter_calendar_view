@@ -395,10 +395,24 @@ class EventGenerator<T extends Object?> extends StatelessWidget {
         heightPerMinute: heightPerMinute,
         startHour: startHour);
 
+    final minEventTileHeight = 22.0;
+
     return List.generate(events.length, (index) {
+      double top = events[index].top;
+      double bottom = events[index].bottom;
+
+      if(height - bottom - top < minEventTileHeight){
+        if(bottom - minEventTileHeight > 0){
+          bottom = height - (top + minEventTileHeight);
+        }
+        else{
+          top = height - (bottom + minEventTileHeight);
+        }
+      }
+
       return Positioned(
-        top: events[index].top,
-        bottom: events[index].bottom,
+        top: top,
+        bottom: bottom,
         left: events[index].left,
         right: events[index].right,
         child: GestureDetector(
